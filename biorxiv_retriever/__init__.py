@@ -96,9 +96,17 @@ class BiorxivRetriever():
         if metadata or full_text:
             for paper in tqdm(papers):
                 biorxiv_url = paper['biorxiv_url'] + '.full'
+                biorxiv_url_author = paper['biorxiv_url'] + '.article-info'
                 page_html = request.urlopen(biorxiv_url).read().decode("utf-8")
+                info_html = request.urlopen(biorxiv_url_author).read().decode("utf-8")
                 page_soup = BeautifulSoup(page_html, "lxml")
+                info_soup = BeautifulSoup(info_html, "lxml")
                 if metadata:
+                    authors = info_soup.findAll("span", {"class":"name"})
+                    if authors is not None:
+                        paper['authors'] = [span.get_text() for span in authors]
+                    else:
+                        paper['authors'] = 'unk'
                     date = page_soup.find("div", {"class": "pane-1"})
                     if date is not None:
                         date_str = date.text.split('\xa0')[-1].strip()
