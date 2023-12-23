@@ -46,7 +46,7 @@ class BiorxivRetriever():
 
         return links
 
-    def _get_papers_list_rxivist(self, query):
+    def _get_papers_list_rxivist(self, query,max_num = 10):
         papers = []
         for i in range(0, 100):
             url = self.serach_url.format(query, i)
@@ -56,9 +56,9 @@ class BiorxivRetriever():
 
             papers.extend(data['results'])
 
-        return papers
+        return papers[:,max_num]
 
-    def _get_papers_list_biorxiv(self, query):
+    def _get_papers_list_biorxiv(self, query,max_num = 10):
         papers = []
         url = self.serach_url.format(query)
         page_html = request.urlopen(url).read().decode("utf-8")
@@ -80,15 +80,15 @@ class BiorxivRetriever():
                 links = self._get_all_links(page_soup)
                 papers.extend(links)
 
-        return papers
+        return papers[:,max_num]
 
-    def query(self, query, metadata=True, full_text=True):
+    def query(self, query, max_num = 10, metadata=True, full_text=True):
         query = query.replace(' ', '%20')
 
         if self.search_engine == 'rxivist':
-            papers = self._get_papers_list_rxivist(query)
+            papers = self._get_papers_list_rxivist(query,max_num)
         elif self.search_engine == 'biorxiv':
-            papers = self._get_papers_list_biorxiv(query)
+            papers = self._get_papers_list_biorxiv(query,max_num)
         else:
             raise Exception('None implemeted search engine: {}'.format(
                 self.search_engine))
