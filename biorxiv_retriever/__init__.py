@@ -56,7 +56,7 @@ class BiorxivRetriever():
 
             papers.extend(data['results'])
 
-        return papers[:,max_num]
+        return papers[:max_num]
 
     def _get_papers_list_biorxiv(self, query,max_num = 10):
         papers = []
@@ -80,7 +80,7 @@ class BiorxivRetriever():
                 links = self._get_all_links(page_soup)
                 papers.extend(links)
 
-        return papers[:,max_num]
+        return papers[:max_num]
 
     def query(self, query, max_num = 10, metadata=True, full_text=True):
         query = query.replace(' ', '%20')
