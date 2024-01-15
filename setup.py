@@ -9,7 +9,7 @@ setup(
   name = 'biorxiv_retriever',
   #packages = ['biorxiv_retriever'],
   packages = find_packages(),
-  version = '0.20.2',
+  version = '0.20.1',
   license='MIT',
   description = 'Simple retriever for Biorxiv articles',
   long_description=long_description,
