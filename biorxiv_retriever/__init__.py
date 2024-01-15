@@ -104,9 +104,13 @@ class BiorxivRetriever():
                 if metadata:
                     authors = info_soup.findAll("span", {"class":"name"})
                     if authors is not None:
-                        paper['authors'] = [span.get_text() for span in authors]
+                        authorstr = ""
+                        for span in authors:
+                            authorstr+=span.get_text()
+                        paper['authors'] = authorstr
                     else:
                         paper['authors'] = 'unk'
+
                     date = page_soup.find("div", {"class": "pane-1"})
                     if date is not None:
                         date_str = date.text.split('\xa0')[-1].strip()
